@@ -1,0 +1,13 @@
+{
+  "queue_capacity": 50,
+  "queue_alert_rate": 0.041666666666666664,
+  "model_lane_capacity": 35,
+  "graph_lane_capacity": 15,
+  "graph_candidate_capacity": 15,
+  "model_top50_graph_overlap": 0,
+  "combined_queue_graph_overlap": 15,
+  "swap_in_count": 15,
+  "swap_out_count": 15,
+  "automatic_relabel_allowed": false,
+  "automatic_external_filing_allowed": false
+}

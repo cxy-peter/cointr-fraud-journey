@@ -1,0 +1,10 @@
+CoinTR Fraud Journey + SQL Risk Profile Demo
+Copyright (c) 2026 Xinyu Chen
+
+General point-in-time modeling, shallow-tree explanation, train-fold-only
+undersampling, Risk Graph weighting/noise filtering, and manual-review boundary
+patterns were adapted from the MIT-licensed local project
+"digital-asset-cex-risk-strategy-ai-copilot", copyright (c) 2026 Xinyu Chen.
+
+This project does not copy or redistribute proprietary source documents or raw
+business data. Third-party Python dependencies retain their respective licenses.

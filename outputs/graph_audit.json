@@ -1,0 +1,9 @@
+{
+  "top_n": 15,
+  "ip_weight": 0.25,
+  "strong_relation_min_weight": 0.8,
+  "deposit_address_included": false,
+  "filtered_supernode_or_public_identifiers": 7,
+  "path_time_direction_amount_count_included": true,
+  "automatic_enforcement": false
+}

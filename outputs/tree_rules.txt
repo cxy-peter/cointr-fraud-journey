@@ -1,0 +1,4 @@
+EXPLORATORY FULL-FIT TREE RULES — NOT OOF VALIDATED
+Leaf positive rates are same-sample diagnostics, not validation results or production thresholds.
+
+{"action": "MANUAL_REVIEW", "automatic_enforcement": false, "conditions": "total_event_count > 61.5 AND fund_loop_cv <= 0.266822 AND kyc_to_first_deposit_minutes <= 1732.5", "full_fit_positive_rate": 0.3114754098360656, "positive_count": 19, "rule_id": "TREE_RULE_004", "sample_count": 61, "validation_status": "exploratory_full_fit_not_oof_validated"}

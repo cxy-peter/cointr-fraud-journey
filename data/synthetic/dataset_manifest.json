@@ -1,0 +1,8 @@
+{
+  "synthetic_only": true,
+  "seed": 20260728,
+  "users": 1200,
+  "fraud_labels": 19,
+  "events_in_sqlite_only": 105318,
+  "raw_event_export_written": false
+}

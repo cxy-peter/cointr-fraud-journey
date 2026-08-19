@@ -1,0 +1,103 @@
+{
+  "seed": 20260728,
+  "user_count": 1200,
+  "fraud_count": 19,
+  "event_count": 105318,
+  "graph_candidate_count": 15,
+  "review_queue_count": 50,
+  "kep_case_count": 13703,
+  "kep_status_counts": {
+    "MATCH_SORUSTURMA": 12068,
+    "MATCH_SAYI": 939,
+    "EXCLUDED_ICRA": 378,
+    "AMBIGUOUS_MULTIPLE": 135,
+    "NOT_FOUND": 120,
+    "BUSINESS_NO_RESPONSE": 63
+  },
+  "model_metrics": [
+    {
+      "model_name": "decision_tree_depth3",
+      "sample_size": 1200,
+      "positive_count": 19,
+      "roc_auc": 0.9017113062079415,
+      "ks": 0.809082401176523,
+      "average_precision": 0.21423602961090546,
+      "lift_top_10": 8.510687198345208,
+      "lift_top_20": 4.338083199264537
+    },
+    {
+      "model_name": "xgboost_oof",
+      "sample_size": 1200,
+      "positive_count": 19,
+      "roc_auc": 0.9647043094612059,
+      "ks": 0.855920495565756,
+      "average_precision": 0.5609897335271634,
+      "lift_top_10": 8.94736842105263,
+      "lift_top_20": 4.7368421052631575
+    }
+  ],
+  "feature_build_audit": {
+    "input_events": 105318,
+    "terminal_success_events": 97597,
+    "pit_eligible_events": 66837,
+    "pit_excluded_events": 38481,
+    "feature_cutoff_rule": "label_observed_at_minus_7_days",
+    "label_maturity_days": 52,
+    "bank_user_name_canonical": "bank_user_name",
+    "bankUserName_alias_accepted": true,
+    "bankUserName_alias_used": false,
+    "bank_user_name_non_null_coverage": 1.0,
+    "asset_pairs": [
+      "BTC_TRY",
+      "BTC_USDT",
+      "ETH_TRY",
+      "ETH_USDT",
+      "USDC_USDT",
+      "USDT_TRY"
+    ],
+    "all_asset_pairs_included": true,
+    "point_in_time_safe": true
+  },
+  "graph_audit": {
+    "top_n": 15,
+    "ip_weight": 0.25,
+    "strong_relation_min_weight": 0.8,
+    "deposit_address_included": false,
+    "filtered_supernode_or_public_identifiers": 7,
+    "path_time_direction_amount_count_included": true,
+    "automatic_enforcement": false
+  },
+  "alert_capacity": {
+    "queue_capacity": 50,
+    "queue_alert_rate": 0.041666666666666664,
+    "model_lane_capacity": 35,
+    "graph_lane_capacity": 15,
+    "graph_candidate_capacity": 15,
+    "model_top50_graph_overlap": 0,
+    "combined_queue_graph_overlap": 15,
+    "swap_in_count": 15,
+    "swap_out_count": 15,
+    "automatic_relabel_allowed": false,
+    "automatic_external_filing_allowed": false
+  },
+  "sqlite_table_counts": {
+    "users": 1200,
+    "events": 105318,
+    "user_features": 1200,
+    "model_scores": 1200,
+    "human_review_queue": 50,
+    "graph_candidates": 15,
+    "risk_profile_history": 3606,
+    "str_cases": 80,
+    "kep_cases": 13703,
+    "kep_emails": 13382,
+    "kep_match_results": 13703
+  },
+  "sql_result_row_counts": {
+    "01_customer_risk_profile.sql": 1200,
+    "02_str_case_mart.sql": 80,
+    "03_fraud_feature_snapshot.sql": 1200,
+    "04_kep_case_input.sql": 13703
+  },
+  "raw_event_export_written": false
+}

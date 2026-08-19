@@ -1,0 +1,28 @@
+feature,definition,source,window,available_at,owner
+registration_to_kyc_minutes,Minutes from registration to successful KYC,"REGISTER,KYC_SUCCESS",lifecycle_to_feature_cutoff,KYC_SUCCESS.available_at,risk_analytics
+kyc_to_first_deposit_minutes,Minutes from successful KYC to first fiat deposit,"KYC_SUCCESS,FIAT_DEPOSIT",lifecycle_to_feature_cutoff,FIAT_DEPOSIT.available_at,risk_analytics
+deposit_count,Successful fiat deposit count,FIAT_DEPOSIT,registration_to_feature_cutoff,event.available_at,feature_platform
+trade_count,Successful spot and API trade count across every asset pair,"SPOT_TRADE,API_TRADE",registration_to_feature_cutoff,event.available_at,feature_platform
+withdrawal_count,Successful on-chain withdrawal count,CHAIN_WITHDRAW,registration_to_feature_cutoff,event.available_at,feature_platform
+deposit_amount,Successful fiat deposit amount sum in synthetic USDT equivalent,FIAT_DEPOSIT,registration_to_feature_cutoff,event.available_at,feature_platform
+trade_amount,Successful spot/API amount sum across all asset pairs in synthetic USDT equivalent,"SPOT_TRADE,API_TRADE",registration_to_feature_cutoff,event.available_at,feature_platform
+withdrawal_amount,Successful on-chain withdrawal amount sum,CHAIN_WITHDRAW,registration_to_feature_cutoff,event.available_at,feature_platform
+withdraw_deposit_ratio,Withdrawal amount divided by deposit amount,derived,registration_to_feature_cutoff,all inputs available,risk_analytics
+trade_deposit_ratio,Trade amount divided by deposit amount,derived,registration_to_feature_cutoff,all inputs available,risk_analytics
+fund_loop_cv,Population standard deviation of deposit/trade/withdraw totals divided by their mean,derived,registration_to_feature_cutoff,all inputs available,risk_analytics
+amount_diff_ratio,Range of deposit/trade/withdraw totals divided by their mean,derived,registration_to_feature_cutoff,all inputs available,risk_analytics
+small_fiat_deposit_count,Successful fiat deposits below 1000 synthetic USDT equivalent,FIAT_DEPOSIT,registration_to_feature_cutoff,event.available_at,feature_platform
+withdraw_address_unique_count,Distinct on-chain withdrawal addresses,CHAIN_WITHDRAW,registration_to_feature_cutoff,event.available_at,feature_platform
+withdraw_ip_unique_count,Distinct IPs used for successful withdrawals,CHAIN_WITHDRAW,registration_to_feature_cutoff,event.available_at,feature_platform
+deposit_ip_unique_count,Distinct IPs used for successful fiat deposits,FIAT_DEPOSIT,registration_to_feature_cutoff,event.available_at,feature_platform
+withdraw_deposit_ip_ratio,Withdrawal-IP diversity divided by deposit-IP diversity,derived,registration_to_feature_cutoff,all inputs available,risk_analytics
+device_unique_count,Distinct observed devices,all successful events,registration_to_feature_cutoff,event.available_at,feature_platform
+api_event_ratio,Successful API-trade events divided by all successful events,API_TRADE,registration_to_feature_cutoff,event.available_at,feature_platform
+night_event_ratio,Successful events between 00:00 and 05:59 divided by all successful events,all successful events,registration_to_feature_cutoff,event.available_at,feature_platform
+total_event_count,All successful events before the PIT cutoff,all successful events,registration_to_feature_cutoff,event.available_at,feature_platform
+bank_risk_max,Maximum synthetic risk score among deposit banks,FIAT_DEPOSIT.bank_risk_score,registration_to_feature_cutoff,event.available_at,bank_feature_owner
+bank_risk_mean,Mean synthetic risk score among deposit banks,FIAT_DEPOSIT.bank_risk_score,registration_to_feature_cutoff,event.available_at,bank_feature_owner
+bank_name_match_ratio,Share of deposits whose canonical bank_user_name equals the synthetic customer name; bankUserName is an accepted input alias,FIAT_DEPOSIT.bank_user_name,registration_to_feature_cutoff,event.available_at,bank_feature_owner
+asset_pair_unique_count,Distinct asset pairs across successful spot/API trades,"SPOT_TRADE,API_TRADE.asset_pair",registration_to_feature_cutoff,event.available_at,feature_platform
+registration_channel,Synthetic registration channel,users.registration_channel,onboarding,registration_time,onboarding_owner
+kyc_level,Synthetic KYC level,users.kyc_level,onboarding,KYC_SUCCESS.available_at,onboarding_owner

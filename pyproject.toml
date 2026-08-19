@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cointr-fraud-journey-demo"
+version = "1.0.0"
+description = "Deterministic synthetic Fraud Journey, Risk Graph, SQL, and KEP matching demo."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+dependencies = [
+  "numpy==2.5.2",
+  "pandas==2.3.3",
+  "scikit-learn==1.9.0",
+  "scipy==1.18.0",
+  "networkx==3.6.1",
+  "xgboost==3.4.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3"]
+
+[project.scripts]
+cointr-fraud-demo = "cointr_fraud.pipeline:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

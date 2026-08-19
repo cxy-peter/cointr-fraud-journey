@@ -1,0 +1,22 @@
+{
+  "input_events": 105318,
+  "terminal_success_events": 97597,
+  "pit_eligible_events": 66837,
+  "pit_excluded_events": 38481,
+  "feature_cutoff_rule": "label_observed_at_minus_7_days",
+  "label_maturity_days": 52,
+  "bank_user_name_canonical": "bank_user_name",
+  "bankUserName_alias_accepted": true,
+  "bankUserName_alias_used": false,
+  "bank_user_name_non_null_coverage": 1.0,
+  "asset_pairs": [
+    "BTC_TRY",
+    "BTC_USDT",
+    "ETH_TRY",
+    "ETH_USDT",
+    "USDC_USDT",
+    "USDT_TRY"
+  ],
+  "all_asset_pairs_included": true,
+  "point_in_time_safe": true
+}
