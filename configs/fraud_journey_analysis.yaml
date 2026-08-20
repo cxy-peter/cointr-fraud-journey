@@ -1,0 +1,52 @@
+version: fraud_journey.v1
+
+public_boundary:
+  synthetic_only: true
+  raw_internal_records_allowed: false
+  production_claims_allowed: false
+
+objective:
+  baseline: existing Fraud strategy and review capacity
+  target: improve incremental black-sample recall while controlling false positives and user impact
+
+population:
+  exclude_roles:
+    - internal
+    - market_maker
+    - test
+    - institution
+  exclude_silent_users_from_behavior_effectiveness: true
+  curated_white_is_separate_from_label_zero: true
+  unlabelled_is_not_clean_negative: true
+
+behavior_sequence:
+  lookback_months: 4
+  max_events_per_user: 200
+  min_events_per_user: 10
+  session_gap_minutes: 60
+  require_user_event_origin_filter: true
+
+feature_effectiveness:
+  metrics:
+    - coverage
+    - missing_rate
+    - binned_bad_rate
+    - auc_1d
+    - ks_1d
+    - iv_woe
+    - lift_at_operating_depth
+    - psi
+    - direction_consistency
+
+model_experiments:
+  negative_to_positive_ratios: [null, 3, 4, 5]
+  max_depth: [3, 4, 5, 6]
+  probability_thresholds: [0.5, 0.6, 0.7, 0.8, 0.9]
+  selection_partition: development
+  final_partition: chronological_oot_natural_distribution
+  calibration_required_after_undersampling: true
+
+governance:
+  ai_role: propose_and_explain_only
+  deterministic_role: calculate_metrics_rules_and_state
+  human_role: approve_high_impact_action_and_regulatory_outcome
