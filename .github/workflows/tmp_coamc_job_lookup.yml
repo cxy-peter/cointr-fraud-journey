@@ -1,0 +1,83 @@
+name: Temporary COAMC job lookup
+
+on:
+  push:
+    branches:
+      - feature/source-aligned-fraud-report
+
+permissions:
+  contents: read
+
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch public Beisen job payload
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          import urllib.request
+
+          target = "5f2b6f14-9467-4382-ba69-fc6c10294c35"
+          page_url = f"https://coamc.zhiye.com/custom/xzxq?hideMenu=1&jobAdId={target}"
+          api_url = "https://coamc.zhiye.com/api/Jobad/GetJobAdPageList"
+
+          req = urllib.request.Request(page_url, headers={"User-Agent": "Mozilla/5.0"})
+          with urllib.request.urlopen(req, timeout=30) as resp:
+              html = resp.read().decode("utf-8", errors="replace")
+          portal_ids = sorted(set(re.findall(r'PortalId[\\\"\']*\\s*[:=]\\s*[\\\"\']([^\\\"\']+)', html, re.I)))
+          print("HTML_LENGTH", len(html))
+          print("PORTAL_IDS", json.dumps(portal_ids, ensure_ascii=False))
+
+          headers = {
+              "Content-Type": "application/json",
+              "Referer": page_url,
+              "User-Agent": "Mozilla/5.0",
+          }
+          categories = [["1"], ["2"], ["3"], ["4"], []]
+          portals = portal_ids + [""]
+          seen = set()
+          found = []
+          for portal_id in portals:
+              for category in categories:
+                  for page in range(0, 20):
+                      body = {
+                          "PageIndex": page,
+                          "PageSize": 100,
+                          "Category": category,
+                          "KeyWords": "",
+                          "SpecialType": 0,
+                          "PortalId": portal_id,
+                          "DisplayFields": ["Category", "Kind", "LocId", "PostDate", "Salary", "WorkWeChatQrCode"],
+                      }
+                      data = json.dumps(body).encode("utf-8")
+                      req = urllib.request.Request(api_url, data=data, headers=headers, method="POST")
+                      try:
+                          with urllib.request.urlopen(req, timeout=30) as resp:
+                              payload = json.loads(resp.read().decode("utf-8", errors="replace"))
+                      except Exception as exc:
+                          print("REQUEST_ERROR", portal_id, category, page, type(exc).__name__, str(exc))
+                          break
+                      rows = payload.get("Data") if isinstance(payload, dict) else None
+                      if not isinstance(rows, list):
+                          print("NO_DATA", portal_id, category, page, str(payload)[:500])
+                          break
+                      print("PAGE", portal_id or "EMPTY", category, page, "ROWS", len(rows), "COUNT", payload.get("Count"))
+                      for row in rows:
+                          rid = str(row.get("Id") or row.get("JobAdId") or "").lower()
+                          if rid == target.lower() or target.lower() in json.dumps(row, ensure_ascii=False).lower():
+                              key = json.dumps(row, sort_keys=True, ensure_ascii=False)
+                              if key not in seen:
+                                  seen.add(key)
+                                  found.append(row)
+                      if len(rows) < 100:
+                          break
+          print("MATCH_COUNT", len(found))
+          print("MATCH_JSON_BEGIN")
+          print(json.dumps(found, ensure_ascii=False, indent=2))
+          print("MATCH_JSON_END")
+          if not found:
+              raise SystemExit("Target job not found in public payload")
+          PY
