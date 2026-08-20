@@ -2,10 +2,48 @@
 
 这是一个完全独立、可重复运行的合成数据项目。它把支付与数字资产风控材料中的通用方法论转成最小可运行代码：用户生命周期事件、Fraud 候选特征、浅层 Decision Tree、折内隔离的五折 XGBoost OOF、Risk Graph、人工复核队列、SQLite/SQL 客户画像，以及 KEP 邮件主题确定性匹配。
 
-## 结果报告
+## 结果与方法报告
 
 - [中文完整结果报告：执行过程、关键指标、边界与复现](docs/RESULT_REPORT_ZH.md)
+- [Fraud Journey 分析与模型面试综合报告（公开脱敏版）](docs/COINTR_FRAUD_JOURNEY_ANALYSIS_CN.md)
 - [流水线自动生成的简版运行摘要](outputs/RUN_REPORT.md)
+- [后续 Codex 实现任务](docs/CODEX_FRAUD_JOURNEY_TASK.md)
+
+## Source-aligned Fraud Journey 层
+
+现有固定 Demo 保留原有的确定性运行契约；新增的 source-aligned 层用于审计“材料中的分析流程”与“公开合成项目目前能支持的字段”之间的差距，而不是再叠加一个通用 AI Agent。
+
+```text
+现有策略基线
+→ 黑 / 白 / 未标记 / 排除账户口径
+→ 交易币对与行为范围
+→ 银行数据质量
+→ 金额、时间、比例和计数特征
+→ 单特征有效性
+→ 黑用户全链路
+→ 清洗后的行为序列
+→ 链上与 Risk Graph
+→ 浅层 Tree
+→ XGBoost / 可选 LightGBM
+→ 在线、离线策略和生命周期
+```
+
+核心控制包括：
+
+- `fraud_label=0` 不等于经过业务确认的白样本；
+- 交易币对是分群变量，不是单独的 Fraud 定义；
+- 在过滤自动系统/子事件之前，原始 60 分钟 Session 密度无效；
+- `1:4` 是当前固定 Demo 的兼容性默认值，也是材料比较过的候选之一，但不是先验最佳比例；
+- 后续版本应在 Development 比较自然分布、1:3、1:4、1:5，并在自然分布的时间外 OOT 上评价；
+- 欠采样模型分在校准前不能解释为真实欺诈概率。
+
+生成 source-aligned 审计文件：
+
+```powershell
+python scripts/run_source_aligned_fraud_journey.py
+```
+
+输出目录为 `outputs/fraud_journey/`，包括分析步骤、样本口径、模型实验网格、字段覆盖、特征预览、清洗后的 Session 预览和自动生成报告。
 
 ## 真实性与使用边界
 
@@ -27,13 +65,14 @@
 - 50 条高分负样本人工复核队列；
 - 13,703 条合成 KEP 压力测试案件。
 
-`13,703` 只是本项目为了稳定性测试设定的合成规模。上传资料中可核验的历史口径是 **1,273 条 CMS 记录、184 条疑似异常、抽样 20 条根因复核**；两组数字不可互换，也不可把合成压力测试写成真实业务量。
+`13,703` 仅为本项目的合成压力测试规模，不代表真实业务量；公开仓库不披露真实案件数量。
 
 ## 运行
 
 ```powershell
 python -m pip install -e ".[dev]"
 python scripts/run_demo.py
+python scripts/run_source_aligned_fraud_journey.py
 pytest
 ```
 
@@ -47,6 +86,7 @@ pytest
 - `outputs/kep_match_results.csv`
 - `outputs/sql_results/`
 - `outputs/RUN_REPORT.md`
+- `outputs/fraud_journey/`
 
 ## 方法约束
 
@@ -60,7 +100,7 @@ KEP 合成层先查 `sorusturma_no`，再查 `sayi/reference`，只解析严格 
 
 ## 资料使用说明
 
-项目仅采用参考材料中可公开复述的通用概念，例如 PIT、成熟标签、资金闭环、事件窗口、图关系强弱、人工复核、KEP 编号优先级和监管外发边界。没有复制材料中的专有原文、真实记录或敏感字段值。
+项目仅采用参考材料中可公开复述的通用概念，例如 PIT、成熟标签、资金闭环、事件窗口、图关系强弱、人工复核、KEP 编号优先级和监管外发边界。没有复制材料中的原始记录或敏感字段值。
 
 ## License
 
